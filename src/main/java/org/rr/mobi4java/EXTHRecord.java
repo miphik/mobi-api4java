@@ -14,8 +14,9 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class EXTHRecord {
-	
+
 	public static enum RECORD_TYPE {
+		UNKNOWN_3(3),
 		AUTHOR(100),
 		PUBLISHER(101),
 		IMPRINT(102),
@@ -139,11 +140,11 @@ public class EXTHRecord {
 		UNKNOWN_544(544),
 		/** String 'I\x00n\x00M\x00e\x00m\x00o\x00r\x00y\x00' found in this record, for KindleGen V2.9 build 1029-0897292 */
 		IN_MEMORY(547);
-		
+
 		private final int type;
-		
+
     private static Map<Integer, RECORD_TYPE> map = new HashMap<Integer, RECORD_TYPE>();
-    
+
 		static {
 			for (RECORD_TYPE typeEnum : RECORD_TYPE.values()) {
 				if(map.put(typeEnum.type, typeEnum) != null) {
@@ -155,7 +156,7 @@ public class EXTHRecord {
 		private RECORD_TYPE(final int type) {
 			this.type = type;
 		}
-		
+
 		public static RECORD_TYPE valueOf(int type) {
 			return map.get(type);
 		}
@@ -163,8 +164,8 @@ public class EXTHRecord {
 		public int getType() {
 			return type;
 		}
-	}	
-	
+	}
+
 	private int recordType;
 
 	private byte[] recordData;
@@ -172,7 +173,7 @@ public class EXTHRecord {
 	protected EXTHRecord(int recordType) {
 		this.recordType = recordType;
 	}
-	
+
 	EXTHRecord readEXTHRecord(byte[] mobiHeader, int offset) throws IOException {
 		int length = getInt(mobiHeader, offset + 4, 4);
 		if (length < 8) {
@@ -181,7 +182,7 @@ public class EXTHRecord {
 		recordData = getBytes(mobiHeader, offset + 8, length - 8);
 		return this;
 	}
-	
+
 	void writeEXTHRecord(OutputStream out) throws IOException {
 		writeInt(recordType, 4, out);
 		writeInt(getRecordLength(), 4, out);
@@ -191,7 +192,7 @@ public class EXTHRecord {
 	public EXTHRecord.RECORD_TYPE getRecordType() {
 		return EXTHRecord.RECORD_TYPE.valueOf(recordType);
 	}
-	
+
 	protected void setRecordType(EXTHRecord.RECORD_TYPE recordType) {
 		this.recordType = recordType.type;
 	}
@@ -199,7 +200,7 @@ public class EXTHRecord {
 	public byte[] getData() {
 		return recordData;
 	}
-	
+
 	public void setData(byte[] recordData) {
 		this.recordData = recordData;
 	}
@@ -207,7 +208,7 @@ public class EXTHRecord {
 	public int getIntData() {
 		return getInt(recordData);
 	}
-	
+
 	public void setIntData(int value) {
 		recordData = getBytes(value, new byte[4]);
 	}

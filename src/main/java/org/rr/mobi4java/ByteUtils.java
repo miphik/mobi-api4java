@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ByteUtils {
-	
+
 	public static void write(byte[] data, OutputStream out) throws IOException {
 		write(data, data.length, out);
 	}
-	
+
 	public static void write(byte[] data, int length, OutputStream out) throws IOException {
 		out.write(data != null ? data : new byte[length], 0, length);
 	}
@@ -21,7 +21,7 @@ public class ByteUtils {
 	public static void writeInt(int data, int length, OutputStream out) throws IOException {
 		out.write(getBytes(data, new byte[length]), 0, length);
 	}
-	
+
 	public static void writeLong(long data, int length, OutputStream out) throws IOException {
 		out.write(getBytes(data, new byte[length]), 0, length);
 	}
@@ -34,21 +34,29 @@ public class ByteUtils {
 	}
 
 	public static byte[] getBytes(byte[] buffer, int offset) {
-		byte[] b = new byte[buffer.length - offset];
-		System.arraycopy(buffer, offset, b, 0, buffer.length - offset);
-		return b;
+		try {
+			byte[] b = new byte[buffer.length - offset];
+			System.arraycopy(buffer, offset, b, 0, buffer.length - offset);
+			return b;
+		} catch (Exception e) {
+			return new byte[0];
+		}
 	}
-	
+
 	public static byte[] getBytes(byte[] buffer, int offset, int length) {
-		byte[] b = new byte[length];
-		System.arraycopy(buffer, offset, b, 0, length);
-		return b;
+		try {
+			byte[] b = new byte[length];
+			System.arraycopy(buffer, offset, b, 0, length);
+			return b;
+		} catch (Exception e) {
+			return new byte[0];
+		}
 	}
 
 	public static int getInt(byte[] buffer, int offset, int length) {
 		return getInt(getBytes(buffer, offset, length));
 	}
-	
+
 	public static long getLong(byte[] buffer, int offset, int length) {
 		return getLong(getBytes(buffer, offset, length));
 	}
@@ -65,7 +73,7 @@ public class ByteUtils {
 		if(buffer == null || buffer.length == 0) {
 			return EMPTY;
 		}
-		
+
 		int len = buffer.length;
 		int zeroIndex = -1;
 		for (int i = 0; i < len; i++) {
@@ -168,7 +176,7 @@ public class ByteUtils {
 		sb.append(" }");
 		return sb.toString();
 	}
-	
+
 	public static boolean startsWith(byte[] a, byte[] b) {
 		if (a.length >= b.length) {
 			for (int i = 0; i < b.length; i++) {

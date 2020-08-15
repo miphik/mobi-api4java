@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class EXTHHeader {
-	
+
 	private final int exthHeaderOffset;
 
 	private List<EXTHRecord> recordList;
@@ -97,11 +97,11 @@ public class EXTHHeader {
 	public List<EXTHRecord> getRecordList() {
 		return recordList;
 	}
-	
+
 	public void addRecord(EXTHRecord record) {
 		recordList.add(record);
 	}
-	
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
